@@ -35,8 +35,8 @@ static AOC_SESSION_FILE: &'static str = ".aoc-session";
 #[derive(Debug)]
 pub struct PassPolicy {
     required_letter: char,
-    min_amount: u32,
-    max_amount: u32,
+    pos_1: u32,
+    pos_2: u32,
 }
 
 #[derive(Debug)]
@@ -49,28 +49,44 @@ impl PassInstance {
     fn from_string(txt: &str) -> PassInstance {
         // Split string to amount, required letter and password parts.
         let parts: Vec<&str> = txt.split_whitespace().map(|s| s.into()).collect();
-        let minmax: Vec<&str> = parts[0].split("-").collect();
+        let charpos: Vec<&str> = parts[0].split("-").collect();
         assert_eq!(parts.len(), 3);
 
         PassInstance {
             policy: PassPolicy {
                 required_letter: parts[1].replace(":", "").chars().nth(0).unwrap(),
-                min_amount: minmax[0].parse().expect("Failed to parse password policy"),
-                max_amount: minmax[1].parse().expect("failed to parse password policy"),
+                pos_1: charpos[0].parse().expect("Failed to parse password policy"),
+                pos_2: charpos[1].parse().expect("failed to parse password policy"),
             },
             password: parts[2].to_owned(),
         }
     }
 
     fn is_valid(&self) -> bool {
-        // Validate self based on PassPolicy.
-        let count = self.password.matches(self.policy.required_letter).count() as u32;
+        let req1: bool = match self.password.chars().nth(self.policy.pos_1 as usize - 1) {
+            Some(char) => {
+                if char == self.policy.required_letter {
+                    true
+                } else {
+                    false
+                }
+            }
+            None => false,
+        };
 
-        if count >= self.policy.min_amount && count <= self.policy.max_amount {
-            true
-        } else {
-            false
-        }
+        let req2: bool = match self.password.chars().nth(self.policy.pos_2 as usize - 1) {
+            Some(char) => {
+                if char == self.policy.required_letter {
+                    true
+                } else {
+                    false
+                }
+            }
+            None => false,
+        };
+
+        // Password is valid when exactly one position is required_letter.
+        return req1 ^ req2;
     }
 }
 
