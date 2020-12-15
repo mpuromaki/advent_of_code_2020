@@ -84,7 +84,6 @@ fn get_input_test() -> String {
 /// Get input data either from AOC website or fall-back to local
 /// hard-coded test data.
 pub fn get_input() -> Vec<u32> {
-    // Check if .aoc-session is available
     let input: String = match get_input_aoc() {
         Ok(data) => {
             println!("Info: Downloaded test data from: {}", AOC_URL);
