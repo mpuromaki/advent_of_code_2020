@@ -2,7 +2,8 @@
 # Advent of Code 2020 - Day 03
 [Link to task.](https://adventofcode.com/2020/day/3)
 
-How many trees do you encounter on your journey?
+How many trees do you encounter on your journey? Try multiple routes
+and multiply their tree-counts together to get the answer.
 
 Starting from top-left corner (x=0, y=0) and using the following map
 (which repeats infinitely sideways), where # represents a tree:
@@ -25,6 +26,9 @@ You travel 3 steps right and 1 step left. If the position where arrive
 is a tree, increase the count of trees. Continue until you have arrived
 on the lowest line (y=10) on the map.
 
+Repeat for different travel patterns. Multiply all resulting counts of
+trees together.
+
 
 ## Usage example
 
@@ -35,7 +39,7 @@ PS> cargo run --bin day_03
      Running `target\debug\day_03.exe`
 Advent of Code 2020 - Day 03
 Info: Using hard-coded test data. ".aoc-session" not found.
-Answer: 7 trees encountered while travelling.
+Answer: 336 trees encountered while travelling.
 ```
 
 ## Notes / TODO
@@ -202,19 +206,77 @@ impl TobogganMap {
         // Return value at this pos.
         return Ok(self.map[self.pos.y as usize][self.pos.x as usize]);
     }
+
+    pub fn reset_position(&mut self) {
+        self.pos.x = 0;
+        self.pos.y = 0;
+    }
 }
 
 fn main() {
     println!("Advent of Code 2020 - Day 03");
     let map_data = get_input();
     let mut map = TobogganMap::from_string_map(&map_data);
+    let mut all_tree_counts: Vec<usize> = Vec::new();
     let mut encountered_trees: usize = 0;
 
-    // Move until end of map
+    // Move until end of map for all slopes
+    loop {
+        match map.move_by(1, 1) {
+            Ok(val) => encountered_trees += val,
+            Err(_) => break,
+        }
+    }
+    all_tree_counts.push(encountered_trees);
+    encountered_trees = 0;
+    map.reset_position();
+
     loop {
         match map.move_by(3, 1) {
             Ok(val) => encountered_trees += val,
             Err(_) => break,
+        }
+    }
+    all_tree_counts.push(encountered_trees);
+    encountered_trees = 0;
+    map.reset_position();
+
+    loop {
+        match map.move_by(5, 1) {
+            Ok(val) => encountered_trees += val,
+            Err(_) => break,
+        }
+    }
+    all_tree_counts.push(encountered_trees);
+    encountered_trees = 0;
+    map.reset_position();
+
+    loop {
+        match map.move_by(7, 1) {
+            Ok(val) => encountered_trees += val,
+            Err(_) => break,
+        }
+    }
+    all_tree_counts.push(encountered_trees);
+    encountered_trees = 0;
+    map.reset_position();
+
+    loop {
+        match map.move_by(1, 2) {
+            Ok(val) => encountered_trees += val,
+            Err(_) => break,
+        }
+    }
+    all_tree_counts.push(encountered_trees);
+    encountered_trees = 0;
+    map.reset_position();
+
+    // Calculate answer by multiplying all counts together
+    for count in all_tree_counts.iter() {
+        if encountered_trees == 0 {
+            encountered_trees = count.clone();
+        } else {
+            encountered_trees = encountered_trees * count;
         }
     }
 
