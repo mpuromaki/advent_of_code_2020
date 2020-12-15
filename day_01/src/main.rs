@@ -2,16 +2,16 @@
 # Advent of Code 2020 - Day 01
 [Link to task.](https://adventofcode.com/2020/day/1)
 
-Find two values from list where:
+Find three values from list where:
 
 ```text ignore
-value_1 + value_2 == 2020
+value_1 + value_2 + value_3 == 2020
 ```
 
 Correct answer for website is calculated by:
 
 ```text ignore
-value_1 * value_2.
+value_1 * value_2 * value_3.
 ```
 
 ## Usage example
@@ -109,15 +109,17 @@ pub fn get_input() -> Vec<u32> {
 }
 
 /// Calculate correct answer. Uses brute force search.
-pub fn day_01(input: Vec<u32>) -> (u32, u32) {
+pub fn day_01(input: Vec<u32>) -> (u32, u32, u32) {
     for val1 in input.iter() {
         for val2 in input.iter() {
-            if val1 + val2 == 2020 {
-                return (val1.clone(), val2.clone());
+            for val3 in input.iter() {
+                if val1 + val2 + val3 == 2020 {
+                    return (val1.clone(), val2.clone(), val3.clone());
+                }
             }
         }
     }
-    return (0, 0);
+    return (0, 0, 0);
 }
 
 fn main() {
@@ -125,11 +127,11 @@ fn main() {
 
     // Get input data
 
-    let (val1, val2) = day_01(get_input());
-    assert_eq!(val1 + val2, 2020);
-    let answer = val1 * val2;
+    let (val1, val2, val3) = day_01(get_input());
+    assert_eq!(val1 + val2 + val3, 2020);
+    let answer = val1 * val2 * val3;
 
-    println!("Correct values: {} + {} = 2020.", val1, val2);
+    println!("Correct values: {} + {} + {} = 2020.", val1, val2, val3);
     println!("Answer: {}.", answer);
 }
 
