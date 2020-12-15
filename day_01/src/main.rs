@@ -96,7 +96,6 @@ pub fn get_input() -> Vec<u32> {
         }
     };
 
-    // Input data is included in the binary.
     let data = input
         .lines()
         .map(|s| {
@@ -124,8 +123,6 @@ pub fn day_01(input: Vec<u32>) -> (u32, u32, u32) {
 
 fn main() {
     println!("Advent of Code 2020 - Day 01");
-
-    // Get input data
 
     let (val1, val2, val3) = day_01(get_input());
     assert_eq!(val1 + val2 + val3, 2020);
