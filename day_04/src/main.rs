@@ -160,35 +160,35 @@ impl Passport {
 
         return Ok(Passport {
             birth_year: match fields.get("byr") {
-                Some(data) => data.to_owned().parse().unwrap(),
+                Some(data) => data.parse().unwrap(),
                 None => bail!("Invalid data: byr"),
             },
             issue_year: match fields.get("iyr") {
-                Some(data) => data.to_owned().parse().unwrap(),
+                Some(data) => data.parse().unwrap(),
                 None => bail!("Invalid data: iyr"),
             },
             expiration_year: match fields.get("eyr") {
-                Some(data) => data.to_owned().parse().unwrap(),
+                Some(data) => data.parse().unwrap(),
                 None => bail!("Invalid data: eyr"),
             },
             height: match fields.get("hgt") {
-                Some(data) => data.to_owned().parse().unwrap(),
+                Some(data) => data.parse().unwrap(),
                 None => bail!("Invalid data: hgt"),
             },
             hair_color: match fields.get("hcl") {
-                Some(data) => data.to_owned().parse().unwrap(),
+                Some(data) => data.parse().unwrap(),
                 None => bail!("Invalid data: byr"),
             },
             eye_color: match fields.get("ecl") {
-                Some(data) => data.to_owned().parse().unwrap(),
+                Some(data) => data.parse().unwrap(),
                 None => bail!("Invalid data: ecr"),
             },
             passport_id: match fields.get("pid") {
-                Some(data) => data.to_owned().parse().unwrap(),
+                Some(data) => data.parse().unwrap(),
                 None => bail!("Invalid data: pid"),
             },
             country_id: match fields.get("cid") {
-                Some(data) => Some(data.to_owned().parse().unwrap()),
+                Some(data) => Some(data.parse().unwrap()),
                 None => None,
             },
         });
